@@ -8,14 +8,14 @@ from torch.autograd.variable import Variable
 
 
 if __name__ == '__main__':
-    wv=wv = KeyedVectors.load_word2vec_format('wv1.txt', binary=False)
+    wv=KeyedVectors.load_word2vec_format('wv1.txt', binary=False)
     with open('corpus.txt','r',encoding='utf-8')as f:
         data=[line for line in f.readlines()]
     
-    data=corpus(data[:3600],wv)
-    train_s,test_s=random_split(data,[3000,600])
-    train=DataLoader(train_s,batch_size=1500)
-    test=DataLoader(test_s,batch_size=300)
+    data=corpus(data[:1000],wv)
+    train_s,test_s=random_split(data,[900,100])
+    train=DataLoader(train_s,batch_size=100)
+    test=DataLoader(test_s,batch_size=100)
     
     epochs=1000
     lr=3e-3

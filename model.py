@@ -5,39 +5,41 @@ class fcm(nn.Module):
     def __init__(self) :
         super(fcm,self).__init__()
         self.conv1=nn.Sequential(
-            nn.Conv1d(in_channels=16,out_channels=8,kernel_size=1),
+            nn.Conv1d(in_channels=8,out_channels=4,kernel_size=1),
             nn.ReLU(),
-            nn.BatchNorm1d(8),
+            nn.BatchNorm1d(4),
             nn.MaxPool1d(kernel_size=2),
         )
         self.conv2=nn.Sequential(
-            nn.Conv1d(in_channels=16,out_channels=8,kernel_size=2),
+            nn.Conv1d(in_channels=8,out_channels=4,kernel_size=2),
             nn.ReLU(),
-            nn.BatchNorm1d(8),
+            nn.BatchNorm1d(4),
             nn.MaxPool1d(kernel_size=2),
         )
         self.conv3=nn.Sequential(
-            nn.Conv1d(in_channels=16,out_channels=8,kernel_size=3),
+            nn.Conv1d(in_channels=8,out_channels=4,kernel_size=3),
             nn.ReLU(),
-            nn.BatchNorm1d(8),
+            nn.BatchNorm1d(4),
             nn.MaxPool1d(kernel_size=2),
         )
         self.conv4=nn.Sequential(
-            nn.Conv1d(in_channels=16,out_channels=8,kernel_size=4),
+            nn.Conv1d(in_channels=8,out_channels=4,kernel_size=4),
             nn.ReLU(),
-            nn.BatchNorm1d(8),
+            nn.BatchNorm1d(4),
             nn.MaxPool1d(kernel_size=2),
         )
-        self.bilstm=nn.LSTM(input_size=12,hidden_size=4, \
+        self.bilstm=nn.LSTM(input_size=28,hidden_size=4, \
                         num_layers=2, \
                         bidirectional=True)
 
-        self.h0 = torch.randn(4,8,4).cuda()
-        self.c0= torch.randn(4,8,4).cuda()
-        self.dense=nn.Linear(8,1)
+        self.h0 = torch.randn(4,4,4).cuda()
+        self.c0= torch.randn(4,4,4).cuda()
+        self.dense=nn.Sequential(
+            nn.Linear(8,3),
+            nn.Linear(3,1))
         self.sig=nn.Sigmoid()
     def forward(self,x):
-        x=x.view(len(x),16,8)
+        x=x.view(len(x),8,16)
         x1=self.conv1(x)
         x2=self.conv2(x)
         x3=self.conv3(x)
